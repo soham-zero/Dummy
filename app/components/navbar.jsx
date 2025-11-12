@@ -136,7 +136,7 @@ export default function Navbar() {
       {/* Logo */}
       <div className="absolute left-4 top-1/2 -translate-y-1/2">
         <Link href="/" className="flex-shrink-0">
-          <Image src={logo} alt="Logo" width={170} height={80} className="cursor-pointer" />
+          <Image src="/images/logo (3).png" alt="Logo" width={170} height={80} className="cursor-pointer" />
         </Link>
       </div>
 

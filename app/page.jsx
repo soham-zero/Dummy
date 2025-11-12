@@ -1,8 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import globe from '../public/images/globe.png';
-import pc from '../public/images/pc.png';
 import AuthOverlay from './components/AuthOverlay';
 import BlurText from "@/components/BlurText";
 import { DollarSign, PieChart, BarChart } from "lucide-react";
@@ -391,9 +389,11 @@ export default function HomePage() {
   <div className="lg:w-1/2 flex justify-center">
     <div className="w-[80%] ml-[10%]">
       <Image
-        src={globe}
+        src="/images/globe.png"
         alt="CompareFi Overview"
-        className=""
+        width={500}
+        height={500}
+        className="w-full h-auto mix-blend-multiply scale-105 sm:scale-110"
       />
     </div>
   </div>
@@ -411,8 +411,10 @@ export default function HomePage() {
     <div className="w-full lg:w-1/2 flex justify-center items-center">
       <div className="w-[95%] max-w-xl">
         <Image
-          src={pc}
+          src="/images/pc.png"
           alt="CompareFi Overview"
+          width={500}
+          height={500}
           className="w-full h-auto mix-blend-multiply scale-105 sm:scale-110"
         />
       </div>

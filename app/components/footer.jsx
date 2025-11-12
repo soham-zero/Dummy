@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import logo from '../../public/images/logo (3).png';
 import Image from "next/image";
 
 export default function Footer() {
@@ -15,7 +14,7 @@ export default function Footer() {
               {/* Logo with white background */}
               <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white p-1">
                 <Image
-                  src={logo}
+                  src="/images/logo (3).png"
                   alt="CompareFi Logo"
                   width={32}
                   height={32}
