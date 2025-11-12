@@ -39,3 +39,5 @@ next-env.d.ts
 comparefi-deploy-key
 comparefi-deploy-key.pub
 /Admin/login/page.jsx
+
+sa-key.json

@@ -480,3 +480,39 @@ html {
   animation: fadeSlideUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity;
 }
+
+
+/* Target the df-messenger element root variables */
+df-messenger {
+  --df-messenger-button-bg-color: #fc5732;         /* main chat bubble bg */
+  --df-messenger-button-titlebar-color: #ffffff;  /* bubble icon color */
+  --df-messenger-bubble-background: #ffffff;      /* chat window background */
+  --df-messenger-font-color: #0A0F2C;             /* text color inside chat */
+  --df-messenger-bubble-width: 360px;             /* width of chat window */
+  --df-messenger-chat-window-height: 600px;       /* height */
+  --df-messenger-chat-window-width: 360px;
+  --df-messenger-chat-window-box-shadow: 0 12px 40px rgba(10, 15, 44, 0.12);
+  --df-messenger-chat-bubble-border-radius: 20px;
+  --df-messenger-chat-bubble-icon-color: #fff;
+  --df-messenger-chat-bubble-size: 64px;
+  --df-messenger-chat-bubble-background: #fc5732;
+}
+
+/* Positioning the bubble (dialogflow default is bottom-right) */
+df-messenger {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+/* Optional: smaller bubble on mobile */
+@media (max-width: 640px) {
+  df-messenger {
+    --df-messenger-chat-window-width: 320px;
+    --df-messenger-chat-window-height: 520px;
+    --df-messenger-chat-bubble-size: 56px;
+    right: 12px;
+    bottom: 12px;
+  }
+}

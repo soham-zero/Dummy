@@ -34,17 +34,17 @@ export default function Footer() {
             <h4 className="font-semibold mb-4 text-[#B1ED67]">Products</h4>
             <ul className="space-y-2 text-[#F2FFE1]/80">
               <li>
-                <a href="/products/LAS" className="hover:text-[#B1ED67] transition-colors">
+                <a href="/products" className="hover:text-[#B1ED67] transition-colors">
                   Loan Against Shares (LAS)
                 </a>
               </li>
               <li>
-                <a href="/products/lamf" className="hover:text-[#B1ED67] transition-colors">
+                <a href="/products" className="hover:text-[#B1ED67] transition-colors">
                   Loan Against Mutual Funds (LAMF)
                 </a>
               </li>
               <li>
-                <a href="/products/mtf" className="hover:text-[#B1ED67] transition-colors">
+                <a href="/products" className="hover:text-[#B1ED67] transition-colors">
                   Margin Trading Facility (MTF)
                 </a>
               </li>
@@ -64,9 +64,9 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4 text-[#B1ED67]">Support</h4>
             <ul className="space-y-2 text-[#F2FFE1]/80">
-              <li><a href="/help" className="hover:text-[#B1ED67] transition-colors">Contact Us</a></li>
-              <li><a href="/privacy" className="hover:text-[#B1ED67] transition-colors">Privacy Policy</a></li>
-              <li><a href="/terms" className="hover:text-[#B1ED67] transition-colors">Terms of Service</a></li>
+              <li><a className="hover:text-[#B1ED67] transition-colors">Contact Us</a></li>
+              <li><a className="hover:text-[#B1ED67] transition-colors">Privacy Policy</a></li>
+              <li><a className="hover:text-[#B1ED67] transition-colors">Terms of Service</a></li>
             </ul>
           </div>
         </div>

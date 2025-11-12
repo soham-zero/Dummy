@@ -171,14 +171,14 @@ export default function ProductPage() {
                     ))}
                   </ul>
                   <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                    <Link href={`/products/${id}`}>
+                    <Link href={`/products`}>
                       <Button
                         className="w-full sm:w-auto px-5 py-3 bg-[#FF5732] text-white hover:bg-[#B1ED67] transition"
                       >
                         Learn More
                       </Button>
                     </Link>
-                    <Link href={`/products/${id}#eligibility`}>
+                    <Link href={`/products`}>
                       <Button
                         variant="ghost"
                         className="w-full sm:w-auto px-5 py-3 text-[#1D3537] border border-[#B1ED67]"
@@ -208,7 +208,7 @@ export default function ProductPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mt-6 md:mt-0">
-              <Link href="/eligibility">
+              <Link href="/products">
                 <Button
                   className="bg-[#FF5732] text-white px-8 py-4 text-base sm:text-lg font-semibold hover:bg-[#B1ED67] transition"
                 >

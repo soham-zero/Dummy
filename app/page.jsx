@@ -1,8 +1,9 @@
 'use client';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import globe from './images/globe.png';
 import pc from './images/pc.png';
-import TiltedCard from '@/components/TiltedCard'; 
+import AuthOverlay from './components/AuthOverlay';
 import BlurText from "@/components/BlurText";
 import { DollarSign, PieChart, BarChart } from "lucide-react";
 import { Link as ScrollLink } from 'react-scroll';
@@ -12,20 +13,15 @@ const handleAnimationComplete = () => {
 };
 
 import SpotlightCard from './components/SpotlightCard.jsx'; // Import the SpotlightCard component from './components/SpotlightCard';
-import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import Navbar from './components/navbar';
-import Footer from './components/footer';
+import Navbar from './components/navbar.jsx';
+import Footer from './components/footer.jsx';
+import DialogflowMessenger from "./components/DialogflowMessenger";
 import { motion } from 'framer-motion';
 import { Briefcase, LineChart, BarChart3, Shield, CreditCard, TrendingUp, Sparkles } from 'lucide-react';
 import DisplayCards from "@/components/ui/display-cards";
-import "./globals.css";
-import CompareProductsTable from "./components/CompareProductsTable";
+// globals.css is imported in `app/layout.js`; no need to re-import here
 
-// ShadCN components
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 // Hero cards
@@ -111,6 +107,16 @@ const PRODUCTS = [
 export default function HomePage() {
   const heroRef = useRef(null);
   const [parallaxIcons, setParallaxIcons] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('demo_logged_in') === 'true') setLoggedIn(true);
+  }, []);
+
+
+  const handleLoginComplete = () => {
+    setLoggedIn(true);
+  };
 
   // Create multiple floating icons for parallax effect
   useEffect(() => {
@@ -135,8 +141,6 @@ export default function HomePage() {
     setParallaxIcons(icons);
   }, []);
 
-  const features = ["Transparent Comparisons", "Independent & Unbiased", "Smart, Simple Insights"];
-
   const handleMouseMove = (e) => {
     parallaxIcons.forEach(icon => {
       const el = document.getElementById(icon.id);
@@ -154,12 +158,29 @@ export default function HomePage() {
         className="min-h-screen flex flex-col bg-slate-50 text-slate-900 overflow-x-hidden"
         onMouseMove={handleMouseMove}
       >
-        {/* Navbar */}
-        <div className="fixed top-2 left-1/2 transform -translate-x-1/2 z-[9999] w-full max-w-screen-xl px-4 pt-4">
-          <Navbar />
-        </div>
 
-        <main className="flex-grow bg-[#fcfefb]">
+        {!loggedIn && <AuthOverlay onLoginComplete={handleLoginComplete} />}
+        {loggedIn && (
+          <>
+          
+          <button
+            onClick={() => {
+              localStorage.removeItem("demo_logged_in");
+              setLoggedIn(false); // triggers re-render to show AuthOverlay again
+            }}
+            className="fixed top-4 right-4 z-[9999] bg-red-500 text-white px-4 py-2 rounded-md shadow-lg hover:bg-gray-800 transition-colors"
+          >
+            Logout
+          </button>
+
+          <DialogflowMessenger />
+
+          {/* Navbar */}
+          <div className="fixed top-2 left-1/2 transform -translate-x-1/2 z-[9999] w-full max-w-screen-xl px-4 pt-4">
+          <Navbar />
+          </div>
+          
+            <main className="flex-grow bg-[#fcfefb]">
 
           {/* HERO SECTION */}
           <section className="relative flex items-center justify-center min-h-[85vh] bg-white bg-opacity-0 overflow-hidden px-4 sm:px-6 lg:px-10" >
@@ -187,16 +208,6 @@ export default function HomePage() {
                     transition={{ delay: 0.1, duration: 0.7, ease: 'easeOut' }}
                   >
                    </motion.h1>
-
-                  {/* <TextType 
-                    text={["CompareFi"]}
-                    typingSpeed={75}
-                    pauseDuration={1500}
-                    showCursor={true}
-                    cursorCharacter="|"
-                    className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-black tracking-tight leading-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.1)]'
-                  />
-                  </motion.h1> */}
 
                   <motion.h1
                     className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black tracking-tight leading-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.1)]"
@@ -271,9 +282,9 @@ export default function HomePage() {
               {/* RIGHT */}
               <motion.div
                 className="flex-1 flex justify-center items-center w-full"
-                i initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: -20 }} // 👈 lifts it up slightly
-                  transition={{ delay: 0.5, duration: 0.7 }}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: -20 }} // 👈 lifts it up slightly
+                transition={{ delay: 0.5, duration: 0.7 }}
               >
                 <div className="flex w-full max-w-2xl sm:max-w-3xl md:max-w-4xl lg:max-w-5xl items-center justify-center py-10 sm:py-14 md:py-20 ">
                   <DisplayCards cards={defaultCards} />
@@ -301,7 +312,7 @@ export default function HomePage() {
   {/* Right Section (Cards Grid) */}
   <div className="lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mr-10">
 {/* LAS Card */}
-<a href="/products/las" className="card4 group relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 p-6 cursor-pointer">
+<a href="/products" className="card4 group relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 p-6 cursor-pointer">
   <div className="flex items-center space-x-4">
     {/* Icon on the left */}
     <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-[#FF5732]/20 rounded-full group-hover:bg-[#FF5732]/30 transition-colors">
@@ -317,7 +328,7 @@ export default function HomePage() {
 </a>
 
 {/* LAMF Card */}
-<a href="/products/lamf" className="card4 group relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 p-6 cursor-pointer">
+<a href="/products" className="card4 group relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 p-6 cursor-pointer">
   <div className="flex items-center space-x-4">
     <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-[#FF5732]/20 rounded-full group-hover:bg-[#FF5732]/30 transition-colors">
       <PieChart className="w-6 h-6 text-[#FF5732] group-hover:text-white" />
@@ -331,7 +342,7 @@ export default function HomePage() {
 </a>
 
 {/* MTF Card */}
-<a href="/products/mtf" className="card4 group relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 p-6 cursor-pointer">
+<a href="/products" className="card4 group relative overflow-hidden rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 p-6 cursor-pointer">
   <div className="flex items-center space-x-4">
     <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-[#FF5732]/20 rounded-full group-hover:bg-[#FF5732]/30 transition-colors">
       <BarChart className="w-6 h-6 text-[#FF5732] group-hover:text-white" />
@@ -347,115 +358,6 @@ export default function HomePage() {
 </div>
 </section>
 
-
-{/* COMPARE PRODUCTS */}
-{/* COMPARE PRODUCTS */}
-
-<section id="compare" className="relative flex justify-center items-center mb-[2%] pb-[5%] mt-[2%] min-h-[80vh] overflow-hidden px-6 lg:px-10 bg-opacity-0">
-  {/* Subtle noise/background */}
-  <div className="absolute inset-0 bg-white bg-opacity-0 pointer-events-none"></div>
-
-  {/* Glass card container */}
-  <SpotlightCard
-    className="relative z-10 w-[90%] rounded-3xl bg-white backdrop-blur-lg p-10 sm:p-14 flex flex-col drop-shadow-2xl shadow-2xl border-none "
-    spotlightColor="rgba(177,237,103,0)"
-  >
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-    >
-      <h2 className="text-4xl sm:text-5xl font-extrabold mb-12 text-center text-black">
-        Compare Products
-      </h2>
-
-      <Tabs defaultValue="las">
-        <TabsList className="mb-10">
-          {PRODUCTS.map((p) => (
-            <TabsTrigger
-              key={p.id}
-              value={p.id}
-              className={`
-                text-lg sm:text-xl px-6 sm:px-8 py-3 sm:py-4 rounded-xl whitespace-nowrap transition font-bold
-                focus-visible:ring-4 focus-visible:ring-emerald-400
-                data-[state=active]:bg-gradient-to-t from-white to-[#B1ED67]
-                data-[state=active]:text-black
-                data-[state=active]:drop-shadow-2xl
-              `}
-            >
-              {p.title.split('(')[0].trim()}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-
-        {PRODUCTS.map((p) => (
-          <TabsContent key={p.id} value={p.id}>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="grid md:grid-cols-2 gap-12 items-start text-center md:text-left pt-8 pl-2">
-                {/* Left Info */}
-                <div>
-                  <h4 className="text-2xl font-semibold text-[#0A0F2C]">
-                    <BlurText
-                      text={p.title}
-                      delay={50}
-                      animateBy="words"
-                      direction="top"
-                      onAnimationComplete={handleAnimationComplete}
-                      className="text-4xl font-bold text-[#0A0F2C]"
-                    />
-                  </h4>
-
-                  <BlurText
-                    text={p.blurb}
-                    delay={150}
-                    animateBy="words"
-                    direction="bottom"
-                    onAnimationComplete={handleAnimationComplete}
-                    className="text-xl text-black mt-5 leading-relaxed"
-                  />
-
-                  <ul className="mt-8 text-lg text-slate-600 space-y-4">
-                    {p.bullets.map((b, i) => (
-                      <li key={i}>
-                        <BlurText
-                          text={`• ${b}`}
-                          delay={50 + i * 5}
-                          animateBy="words"
-                          direction="bottom"
-                          onAnimationComplete={handleAnimationComplete}
-                          className="text-lg text-slate-700"
-                        />
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-10 flex flex-col sm:flex-row gap-6 justify-center md:justify-start">
-                    <Link href={`/products/${p.id}`}>
-                      <Button size="lg" className="text-lg px-8 py-4 bg-[#FF5732] hover:bg-[#FF5732]">
-                        Deep Dive
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Right Metrics → Firebase Table */}
-                <div>
-                  <CompareProductsTable productType={p.id} />
-                </div>
-              </div>
-            </motion.div>
-          </TabsContent>
-        ))}
-      </Tabs>
-    </motion.div>
-  </SpotlightCard>
-</section>
-
-
           {/* FEATURES SECTION */}
           <section className="w-full bg-[#F9FAFB] bg-opacity-0 py-15 px-6 lg:px-20 flex flex-col lg:flex-row justify-between items-center lg:items-start">
   <section className="w-full bg-[#F9FAFB]  bg-opacity-0 py-10 px-6 lg:px-20 flex flex-col lg:flex-row justify-between items-center lg:items-start">
@@ -466,11 +368,10 @@ export default function HomePage() {
     </h2>
     <p className="text-[#4B5563] mb-6 text-lg leading-relaxed">
       CompareFi is an independent platform built to bring transparency and clarity to finance. We simplify complex financial decisions by helping you compare loans, investments, and other products side by side — so you can understand true costs, uncover hidden charges, and choose what’s genuinely right for you.
-      Our mission is to make financial decision-making clear, confident, and fair for everyone
-
+      Our mission is to make financial decision-making clear, confident, and fair for everyone.
     </p>
     <div>
-<a class="button1" href="/about">
+<a className="button1" href="/about">
   <span>Read More</span>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 43">
     <polygon
@@ -500,15 +401,6 @@ export default function HomePage() {
 </section>
 
 </section>
-{/* WHY COMPAREFI
-          <section className="w-full bg-[#EEF1FA] bg-opacity-0 py-20 px-6 lg:px-20">
-            <div className="max-w-7xl mx-auto text-center mb-14">
-              <h2 className="text-4xl font-extrabold text-[#0A0F2C] mb-4">Why CompareFi?</h2>
-              <p className="text-[#4B5563] text-lg max-w-2xl mx-auto">Discover how CompareFi helps you make confident, data-driven financial decisions.</p>
-            </div>
-            
-          </section> */}
-
 
 {/* ✅ Responsive Why CompareFi Section */}
 <section className="w-full py-10 px-6 sm:px-10 lg:px-20 mb-[5%] overflow-hidden">
@@ -548,7 +440,7 @@ export default function HomePage() {
 
       {/* ✅ Feature Cards */}
       <div
-        className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 w-full max-w-2xl 
+        className="mt-10 grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 w-full max-w-2xl 
                    place-items-center auto-rows-fr"
       >
         {[
@@ -651,10 +543,11 @@ export default function HomePage() {
   </div>
 </section>
 
-
         </main>
-        {/* FOOTER */}
+
         <Footer />
+        </>
+        )}
       </div>
     </TooltipProvider>
   );
