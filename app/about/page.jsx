@@ -3,7 +3,6 @@
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import Image from 'next/image';
-import Het from '../images/het.jpg';
 
 export default function AboutPage() {
   return (

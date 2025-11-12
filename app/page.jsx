@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import globe from './images/globe.png';
-import pc from './images/pc.png';
+import globe from '../public/images/globe.png';
+import pc from '../public/images/pc.png';
 import AuthOverlay from './components/AuthOverlay';
 import BlurText from "@/components/BlurText";
 import { DollarSign, PieChart, BarChart } from "lucide-react";
@@ -12,14 +12,13 @@ const handleAnimationComplete = () => {
   console.log('Animation completed!');
 };
 
-import SpotlightCard from './components/SpotlightCard.jsx'; // Import the SpotlightCard component from './components/SpotlightCard';
+import SpotlightCard from './components/SpotlightCard.jsx';
 import Navbar from './components/navbar.jsx';
 import Footer from './components/footer.jsx';
 import DialogflowMessenger from "./components/DialogflowMessenger";
 import { motion } from 'framer-motion';
 import { Briefcase, LineChart, BarChart3, Shield, CreditCard, TrendingUp, Sparkles } from 'lucide-react';
 import DisplayCards from "@/components/ui/display-cards";
-// globals.css is imported in `app/layout.js`; no need to re-import here
 
 import { Button } from '@/components/ui/button';
 import { TooltipProvider } from '@/components/ui/tooltip';
